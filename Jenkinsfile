@@ -7,6 +7,11 @@ pipeline {
     tools {
         maven 'Maven'
     }
+    environment {
+        ECR_REPO_URL = '664574038682.dkr.ecr.eu-west-3.amazonaws.com'
+        IMAGE_REPO = "${ECR_REPO_URL}/andriod-app"
+    }
+
     stages {
         stage("init") {
             steps {
