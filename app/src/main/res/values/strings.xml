@@ -1,9 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Back4AppExample</string>
 
-    <string name="app_name">BookSearch</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_book_detail">BookDetailActivity</string>
+
+    <string name="back4app_server_url" translatable="false">https://parseapi.back4app.com/</string>
+    <string name="back4app_app_id" translatable="false">PASTE_YOUR_APPLICATION_ID_HERE</string>
+    <string name="back4app_client_key" translatable="false">PASTE_YOUR_CLIENT_KEY_HERE</string>
+
+
 
 </resources>
