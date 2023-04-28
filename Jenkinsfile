@@ -34,12 +34,13 @@ def isDeployCandidate() {
 pipeline {
     agent { dockerfile true }
     environment {
-        appName = 'jenkins-blog'
+        appName = 'AndriodApp'
+        APPCENTER_API_TOKEN = credentials('emmanuel-appcenter-api-token')
 
-        KEY_PASSWORD = credentials('keyPassword')
-        KEY_ALIAS = credentials('keyAlias')
-        KEYSTORE = credentials('keystore')
-        STORE_PASSWORD = credentials('storePassword')
+        // KEY_PASSWORD = credentials('keyPassword')
+        // KEY_ALIAS = credentials('keyAlias')
+        // KEYSTORE = credentials('keystore')
+        // STORE_PASSWORD = credentials('storePassword')
     }
     stages {
         stage('Run Tests') {
@@ -57,11 +58,11 @@ pipeline {
                 echo 'Building'
                 script {
                     VARIANT = getBuildType()
-                    sh "./gradlew -PstorePass=${STORE_PASSWORD} -Pkeystore=${KEYSTORE} -Palias=${KEY_ALIAS} -PkeyPass=${KEY_PASSWORD} bundle${VARIANT}"
+                    sh "./gradlew  bundle${VARIANT}"
                 }
             }
         }
-        stage('Deploy App to Store') {
+        stage('Deploy App to App Center') {
             when { expression { return isDeployCandidate() } }
             steps {
                 echo 'Deploying'
@@ -82,10 +83,11 @@ pipeline {
                         CHANGELOG = ''
                     }
 
-                    androidApkUpload googleCredentialsId: 'play-store-credentials',
-                            filesPattern: "**/outputs/bundle/${VARIANT.toLowerCase()}/*.aab",
-                            trackName: TRACK,
-                            recentChangeList: [[language: 'en-US', text: CHANGELOG]]
+                    appCenter apiToken: APPCENTER_API_TOKEN,
+                        ownerName: 'emmanuel ogah',
+                        appName: 'andriod-app-cicd',
+                        pathToApp: "**/outputs/bundle/${VARIANT.toLowerCase()}/*.apk",
+                        distributionGroups: 'emmanuel ogah'
                 }
             }
         }
